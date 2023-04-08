@@ -21,13 +21,16 @@ public class SecurityConfiguration {
   private final AuthenticationProvider authenticationProvider;
   private final LogoutHandler logoutHandler;
 
+  private final String[] authorizationPath = {"/SubscriptionManagement/register", "/SubscriptionManagement/authenticate"};
+
+
   @Bean
   public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
     http
         .csrf()
         .disable()
         .authorizeHttpRequests()
-        .requestMatchers("/SubscriptionManagement/**")
+        .requestMatchers(authorizationPath)
           .permitAll()
         .anyRequest()
           .authenticated()

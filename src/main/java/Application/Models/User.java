@@ -30,19 +30,26 @@ public class User implements UserDetails {
   @GeneratedValue
   private Integer id;
 
+  @NotBlank
+  @Size(max = 20)
+  private String firstname;
 
   @NotBlank
   @Size(max = 20)
-  private String firstName;
+  private String lastname;
 
   @NotBlank
-  @Size(max = 20)
-  private String lastName;
-
-  @NotBlank
-  @Size(max = 50)
+  @Size(max = 30)
   @Email
   private String email;
+
+  @Size(max = 8) @Size(min = 8)
+  private String phone;
+
+  @Size(max = 80)
+  private String adress;
+
+  @NotBlank
   private String password;
 
   @ManyToMany(fetch = FetchType.LAZY)

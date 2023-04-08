@@ -54,17 +54,19 @@ public class AuthenticationService {
             roles.add(clientRole);
             break;
           default:
-            adminRole = roleRepository.findByName(ERole.ROLE_ADMIN)
+            clientRole = roleRepository.findByName(ERole.ROLE_CLIENT)
                     .orElseThrow(() -> new RuntimeException("Error: Role is not found."));
-            roles.add(adminRole);
+            roles.add(clientRole);
         }
       });
     }
 
     var user = User.builder()
-        .firstName(registerRequest.getFirstName())
-        .lastName(registerRequest.getLastName())
+        .firstname(registerRequest.getFirstname())
+        .lastname(registerRequest.getLastname())
         .email(registerRequest.getEmail())
+        .phone(registerRequest.getPhone())
+        .adress(registerRequest.getAdress())
         .password(passwordEncoder.encode(registerRequest.getPassword()))
         .roles(roles)
         .build();
@@ -72,8 +74,10 @@ public class AuthenticationService {
     var jwtToken = jwtService.generateToken(user);
     saveUserToken(savedUser, jwtToken);
     return AuthenticationResponse.builder()
-        .token(jwtToken)
-        .build();
+            .token(jwtToken)
+            .id(user.getId())
+            .roles(user.getRoles())
+            .build();
   }
 
   public AuthenticationResponse authenticate(AuthenticationRequest request) {
@@ -89,7 +93,9 @@ public class AuthenticationService {
     revokeAllUserTokens(user);
     saveUserToken(user, jwtToken);
     return AuthenticationResponse.builder()
-        .token(jwtToken)
+            .token(jwtToken)
+            .id(user.getId())
+            .roles(user.getRoles())
         .build();
   }
 
