@@ -21,12 +21,12 @@ public class SecurityConfiguration {
   private final AuthenticationProvider authenticationProvider;
   private final LogoutHandler logoutHandler;
 
-  private final String[] authorizationPath = {"/SubscriptionManagement/register", "/SubscriptionManagement/authenticate"};
+  private final String[] authorizationPath = {"/SubscriptionManagement/register", "/SubscriptionManagement/authenticate","/SubscriptionManagement/list-users"};
 
 
   @Bean
   public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
-    http
+    http.cors().and()
         .csrf()
         .disable()
         .authorizeHttpRequests()
