@@ -3,6 +3,7 @@ package Application.Controller;
 import Application.Models.User;
 import Application.Services.UserManagementsServices;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Collection;
@@ -20,5 +21,10 @@ public class UserManagementsController {
         return userManagementsServices.getUserLists();
     }
 
+
+    @DeleteMapping("delete-user/{id}")
+    public ResponseEntity<?> deleteUser(@PathVariable("id") Integer id) {
+        return userManagementsServices.deleteUser(id);
+    }
 
     }

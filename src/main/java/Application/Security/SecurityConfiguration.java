@@ -21,7 +21,7 @@ public class SecurityConfiguration {
   private final AuthenticationProvider authenticationProvider;
   private final LogoutHandler logoutHandler;
 
-  private final String[] authorizationPath = {"/SubscriptionManagement/register", "/SubscriptionManagement/authenticate","/SubscriptionManagement/list-users"};
+  private final String[] authorizationPath = {"/SubscriptionManagement/register", "/SubscriptionManagement/authenticate"};
 
 
   @Bean
