@@ -79,7 +79,7 @@ public class UserManagementsServices {
             U.setAdress(userRequest.getAdress());
             U.setEmail(userRequest.getEmail());
             U.setPhone(userRequest.getPhone());
-            U.setPassword(generatePassword(userRequest.getFirstname(), userRequest.getLastname()));
+            U.setPassword(passwordEncoder.encode(generatePassword(userRequest.getFirstname(), userRequest.getLastname())));
             U.setRoles(roles);
             var savedUser = userRepository.save(U);
             var jwtToken = jwtService.generateToken(U);
@@ -92,7 +92,7 @@ public class UserManagementsServices {
         } else return null;
     }
 
-private  String generatePassword(String firstName, String lastName) {
+    private  String generatePassword(String firstName, String lastName) {
     Date d=new Date();
     int year =d.getYear()+1900;
     String firstLetterFromFirstName = String.valueOf(firstName.charAt(0)).toUpperCase();
