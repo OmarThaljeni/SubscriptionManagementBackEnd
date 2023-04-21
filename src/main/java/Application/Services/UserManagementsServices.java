@@ -29,8 +29,16 @@ public class UserManagementsServices {
     private final JwtService jwtService;
     private final AuthenticationService authenticationService;
 
-    public Collection<User> getUserLists() {
-        return userRepository.findByRolesNotEmpty();
+    public Collection<User> getUserResponsable() {
+        Role responsableRole = roleRepository.findByName(ERole.ROLE_RESPONSABLE)
+                .orElseThrow(() -> new RuntimeException("Error: Role is not found."));
+        return userRepository.findByRoles(responsableRole);
+    }
+
+    public Collection<User> getUserCustomer() {
+        Role responsableRole = roleRepository.findByName(ERole.ROLE_CLIENT)
+                .orElseThrow(() -> new RuntimeException("Error: Role is not found."));
+        return userRepository.findByRoles(responsableRole);
     }
 
     public ResponseEntity<?> deleteUser(@PathVariable("id") Integer id) {
@@ -105,5 +113,56 @@ public class UserManagementsServices {
             "@" +
             year;
 }
+
+    public AuthenticationResponse addResponsable(@RequestBody UserRequest userRequest) {
+        Set<Role> roles = new HashSet<>();
+        Role responsableRole = roleRepository.findByName(ERole.ROLE_RESPONSABLE)
+                .orElseThrow(() -> new RuntimeException("Error: Role is not found."));
+        roles.add(responsableRole);
+        var user = User.builder()
+                .firstname(userRequest.getFirstname())
+                .lastname(userRequest.getLastname())
+                .email(userRequest.getEmail())
+                .phone(userRequest.getPhone())
+                .adress(userRequest.getAdress())
+                .password(passwordEncoder.encode(generatePassword(userRequest.getFirstname(), userRequest.getLastname())))
+                .roles(roles)
+                .build();
+        var savedUser = userRepository.save(user);
+        var jwtToken = jwtService.generateToken(user);
+        authenticationService.saveUserToken(savedUser, jwtToken);
+        return AuthenticationResponse.builder()
+                .token(jwtToken)
+                .id(user.getId())
+                .roles(user.getRoles())
+                .build();
+    }
+
+    public AuthenticationResponse updateResponsable(@PathVariable("id") Integer id,@RequestBody UserRequest userRequest) {
+        Optional<User> userData = userRepository.findById(id);
+        Set<Role> roles = new HashSet<>();
+        Role responsableRole = roleRepository.findByName(ERole.ROLE_RESPONSABLE)
+                .orElseThrow(() -> new RuntimeException("Error: Role is not found."));
+        roles.add(responsableRole);
+        if(userData.isPresent()) {
+            User U = userData.get();
+            U.setFirstname(userRequest.getFirstname());
+            U.setLastname(userRequest.getLastname());
+            U.setAdress(userRequest.getAdress());
+            U.setEmail(userRequest.getEmail());
+            U.setPhone(userRequest.getPhone());
+            U.setPassword(passwordEncoder.encode(generatePassword(userRequest.getFirstname(), userRequest.getLastname())));
+            U.setRoles(roles);
+            var savedUser = userRepository.save(U);
+            var jwtToken = jwtService.generateToken(U);
+            authenticationService.saveUserToken(savedUser, jwtToken);
+            return AuthenticationResponse.builder()
+                    .token(jwtToken)
+                    .id(U.getId())
+                    .roles(U.getRoles())
+                    .build();
+        } else return null;
+    }
+
 
 }
