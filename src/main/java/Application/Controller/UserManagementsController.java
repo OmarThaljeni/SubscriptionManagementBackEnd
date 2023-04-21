@@ -1,6 +1,8 @@
 package Application.Controller;
 
 import Application.Models.User;
+import Application.Security.Payload.UserRequest;
+import Application.Security.Payload.AuthenticationResponse;
 import Application.Services.UserManagementsServices;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -22,9 +24,17 @@ public class UserManagementsController {
     }
 
 
-    @DeleteMapping("delete-user/{id}")
+    @DeleteMapping("/delete-user/{id}")
     public ResponseEntity<?> deleteUser(@PathVariable("id") Integer id) {
         return userManagementsServices.deleteUser(id);
     }
+    @PostMapping("/add-customer")
+    public AuthenticationResponse addCustomer(@RequestBody UserRequest userRequest) {
+        return userManagementsServices.addCustomer(userRequest);
+    }
 
+    @PutMapping("/update-customer/{id}")
+    public AuthenticationResponse updateCustomer(@PathVariable("id") Integer id,@RequestBody UserRequest userRequest) {
+        return userManagementsServices.updateCustomer(id, userRequest);
+    }
     }
