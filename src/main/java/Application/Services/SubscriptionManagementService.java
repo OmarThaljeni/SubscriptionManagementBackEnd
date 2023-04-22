@@ -59,4 +59,8 @@ public class SubscriptionManagementService {
         } else return null;
     }
 
-}
+    public Collection<Subscription> getAllListSubscription() {
+        return subscriptionRepository.findAll();
+    }
+
+    }

@@ -26,4 +26,12 @@ public class SubscriptionManagementController {
         return subscriptionManagementService.addSubscription(id,subscriptionRequest);
     }
 
+
+    @GetMapping("/all-list-subscriptions")
+    public Collection<Subscription> getAllListSubscription() {
+        return subscriptionManagementService.getAllListSubscription();
+    }
+
+
+
     }
