@@ -1,7 +1,6 @@
 package Application.Controller;
 
 import Application.Models.Subscription;
-import Application.Models.User;
 import Application.Services.SubscriptionManagementService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
