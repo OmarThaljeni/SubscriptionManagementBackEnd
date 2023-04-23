@@ -73,6 +73,11 @@ public class User implements UserDetails {
   @OneToMany(mappedBy = "user")
   private List<Token> tokens;
 
+  @JsonIgnore
+  @OneToMany(mappedBy = "user")
+  private List<Claim> claims;
+
+
   @Override
   public Collection<? extends GrantedAuthority> getAuthorities() {
     return List.of(new SimpleGrantedAuthority(roles.toString()));
