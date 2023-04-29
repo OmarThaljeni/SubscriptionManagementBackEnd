@@ -6,6 +6,7 @@ import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
 import lombok.*;
 
+import java.util.List;
 import java.util.Set;
 
 
@@ -28,6 +29,10 @@ public class Subscription {
 
     @ManyToMany(mappedBy = "subscriptions")
     Set<User> userSet;
+
+    @JsonIgnore
+    @OneToMany(mappedBy = "subscriptions")
+    private List<ServiceCni> services;
 
 
 

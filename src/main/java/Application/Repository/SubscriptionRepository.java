@@ -1,7 +1,6 @@
 package Application.Repository;
 
 import Application.Models.Subscription;
-import Application.Models.Token;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 
