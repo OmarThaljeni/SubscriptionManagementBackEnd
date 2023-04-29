@@ -39,9 +39,5 @@ public class ServiceCni {
     @Size(max = 30)
     private String cpuPc;
 
-    @ManyToOne
-    @JoinColumn(name = "subscription_id")
-    public Subscription subscription;
-
 
 }

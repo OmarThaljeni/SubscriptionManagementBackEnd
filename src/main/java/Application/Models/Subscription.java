@@ -30,10 +30,5 @@ public class Subscription {
     @ManyToMany(mappedBy = "subscriptions")
     Set<User> userSet;
 
-    @JsonIgnore
-    @OneToMany(mappedBy = "subscriptions")
-    private List<ServiceCni> services;
-
-
 
 }

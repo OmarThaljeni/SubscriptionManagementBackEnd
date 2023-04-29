@@ -74,7 +74,7 @@ public class User implements UserDetails {
   private List<Token> tokens;
 
   @JsonIgnore
-  @OneToMany(mappedBy = "subscription")
+  @OneToMany(mappedBy = "user")
   private List<Claim> claims;
 
 
