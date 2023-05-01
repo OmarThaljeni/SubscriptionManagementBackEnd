@@ -31,4 +31,10 @@ public class Subscription {
     Set<User> userSet;
 
 
+    @ManyToMany(mappedBy = "subscriptions")
+    Set<ServiceCni> serviceCniSet;
+
+
+
+
 }

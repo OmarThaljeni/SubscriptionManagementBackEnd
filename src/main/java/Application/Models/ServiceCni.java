@@ -1,9 +1,12 @@
 package Application.Models;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
 import lombok.*;
+
+import java.util.Set;
 
 @Builder
 @NoArgsConstructor
@@ -11,7 +14,7 @@ import lombok.*;
 @Entity
 @Getter
 @Setter
-@Table(name = "service")
+@Table(name = "serviceCni")
 public class ServiceCni {
 
     @Id
@@ -38,6 +41,16 @@ public class ServiceCni {
     @NotBlank
     @Size(max = 30)
     private String cpuPc;
+
+
+    @JsonIgnore
+    @ManyToMany
+    @JoinTable(
+            name = "serviceCni_subscriptions",
+            joinColumns = @JoinColumn(name = "service_cni_id"),
+            inverseJoinColumns = @JoinColumn(name = "subscription_id"))
+    Set<Subscription> subscriptions;
+
 
 
 }

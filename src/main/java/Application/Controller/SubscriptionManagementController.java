@@ -20,9 +20,9 @@ public class SubscriptionManagementController {
         return subscriptionManagementService.getListSubscription(id);
     }
 
-    @PostMapping("add-subscription/{id}")
-    public Subscription addSubscription(@PathVariable("id") Integer id, @RequestBody Subscription subscriptionRequest) {
-        return subscriptionManagementService.addSubscription(id,subscriptionRequest);
+    @PostMapping("/add-subscription/{idCustomer}/{idService}")
+    public Subscription addSubscription(@PathVariable("idCustomer") Integer idCustomer, @PathVariable("idService") Integer idService,@RequestBody Subscription subscriptionRequest) {
+        return subscriptionManagementService.addSubscription(idCustomer,idService,subscriptionRequest);
     }
 
 

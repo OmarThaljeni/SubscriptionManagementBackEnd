@@ -14,9 +14,8 @@ import java.util.Collection;
 @Service
 @RequiredArgsConstructor
 @Transactional
-public class ServiceService {
+public class ServiceCniService {
     private final ServiceCniRepository serviceRepository;
-    private final SubscriptionRepository subscriptionRepository;
 
     public Collection<ServiceCni> getListeService() {
         return serviceRepository.findAll();
