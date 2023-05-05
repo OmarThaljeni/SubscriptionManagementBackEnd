@@ -3,7 +3,6 @@ package Application.Services;
 
 import Application.Models.ServiceCni;
 import Application.Repository.ServiceCniRepository;
-import Application.Repository.SubscriptionRepository;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;

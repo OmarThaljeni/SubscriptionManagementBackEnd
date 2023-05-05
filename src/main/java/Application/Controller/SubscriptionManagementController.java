@@ -1,5 +1,6 @@
 package Application.Controller;
 
+import Application.Models.ServiceCni;
 import Application.Models.Subscription;
 import Application.Services.SubscriptionManagementService;
 import lombok.RequiredArgsConstructor;
@@ -20,9 +21,14 @@ public class SubscriptionManagementController {
         return subscriptionManagementService.getListSubscription(id);
     }
 
-    @PostMapping("/add-subscription/{idCustomer}/{idService}")
-    public Subscription addSubscription(@PathVariable("idCustomer") Integer idCustomer, @PathVariable("idService") Integer idService,@RequestBody Subscription subscriptionRequest) {
-        return subscriptionManagementService.addSubscription(idCustomer,idService,subscriptionRequest);
+    @PostMapping("/add-subscription/{idCustomer}/{idService}/{idSubscription}")
+    public ServiceCni addSubscriptionToService(@PathVariable("idCustomer") Integer idCustomer, @PathVariable("idService") Integer idService, @PathVariable("idSubscription") Integer idSubscription) {
+        return subscriptionManagementService.addSubscriptionToService(idCustomer,idService,idSubscription);
+    }
+
+    @PostMapping("/add-subscription-user/{idCustomer}/{idService}")
+    public Subscription addSubscriptionToUser(@PathVariable("idCustomer") Integer idCustomer, @PathVariable("idService") Integer idService,@RequestBody Subscription subscriptionRequest) {
+        return subscriptionManagementService.addSubscriptionToUser(idCustomer,idService,subscriptionRequest);
     }
 
 
