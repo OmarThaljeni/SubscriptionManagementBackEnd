@@ -15,6 +15,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.HashSet;
+import java.util.Iterator;
 import java.util.Set;
 
 @Service
@@ -26,41 +27,17 @@ public class AuthenticationService {
   private final JwtService jwtService;
   private final AuthenticationManager authenticationManager;
   private final RoleRepository roleRepository;
+  private final String statusInProgress = "En attente";
+  private final String statusAccepted= "Accepté";
 
   public AuthenticationResponse register(RegisterRequest registerRequest) {
     Set<String> strRoles = registerRequest.getRoles();
     Set<Role> roles = new HashSet<>();
-
     if (strRoles == null) {
-      Role userRole = roleRepository.findByName(ERole.ROLE_ADMIN)
+      Role userRole = roleRepository.findByName(ERole.ROLE_CLIENT)
               .orElseThrow(() -> new RuntimeException("Error: Role is not found."));
       roles.add(userRole);
-    } else {
-      strRoles.forEach(role -> {
-        switch (role) {
-          case "Administrateur":
-            Role adminRole = roleRepository.findByName(ERole.ROLE_ADMIN)
-                    .orElseThrow(() -> new RuntimeException("Error: Role is not found."));
-            roles.add(adminRole);
-            break;
-          case "Responsable":
-            Role respRole = roleRepository.findByName(ERole.ROLE_RESPONSABLE)
-                    .orElseThrow(() -> new RuntimeException("Error: Role is not found."));
-            roles.add(respRole);
-            break;
-          case "Client":
-            Role clientRole = roleRepository.findByName(ERole.ROLE_CLIENT)
-                    .orElseThrow(() -> new RuntimeException("Error: Role is not found."));
-            roles.add(clientRole);
-            break;
-          default:
-            clientRole = roleRepository.findByName(ERole.ROLE_CLIENT)
-                    .orElseThrow(() -> new RuntimeException("Error: Role is not found."));
-            roles.add(clientRole);
-        }
-      });
     }
-
     var user = User.builder()
         .firstname(registerRequest.getFirstname())
         .lastname(registerRequest.getLastname())
@@ -68,6 +45,7 @@ public class AuthenticationService {
         .phone(registerRequest.getPhone())
         .adress(registerRequest.getAdress())
         .password(passwordEncoder.encode(registerRequest.getPassword()))
+            .status(statusInProgress)
         .roles(roles)
         .build();
     var savedUser = repository.save(user);
@@ -89,14 +67,34 @@ public class AuthenticationService {
     );
     var user = repository.findByEmail(request.getEmail())
         .orElseThrow();
-    var jwtToken = jwtService.generateToken(user);
-    revokeAllUserTokens(user);
-    saveUserToken(user, jwtToken);
-    return AuthenticationResponse.builder()
-            .token(jwtToken)
-            .id(user.getId())
-            .roles(user.getRoles())
-        .build();
+    Set<Role> roleSet = user.getRoles();
+    for (Iterator<Role> it = roleSet.iterator(); it.hasNext(); ) {
+      Role r = it.next();
+      if(r.getId().equals(1)) {
+        if(statusAccepted.equals(user.getStatus())) {
+          var jwtToken = jwtService.generateToken(user);
+          revokeAllUserTokens(user);
+          saveUserToken(user, jwtToken);
+          return AuthenticationResponse.builder()
+                  .token(jwtToken)
+                  .id(user.getId())
+                  .roles(user.getRoles())
+                  .build();
+        } else {
+          throw new RuntimeException();
+        }
+      } else {
+        var jwtToken = jwtService.generateToken(user);
+        revokeAllUserTokens(user);
+        saveUserToken(user, jwtToken);
+        return AuthenticationResponse.builder()
+                .token(jwtToken)
+                .id(user.getId())
+                .roles(user.getRoles())
+                .build();
+      }
+    }
+    return null;
   }
 
   public void saveUserToken(User user, String jwtToken) {

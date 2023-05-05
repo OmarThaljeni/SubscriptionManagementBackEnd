@@ -28,6 +28,8 @@ public class UserManagementsServices {
     private final PasswordEncoder passwordEncoder;
     private final JwtService jwtService;
     private final AuthenticationService authenticationService;
+    private final String statusInProgress = "En attente";
+    private final String statusAccepted= "Accepté";
 
     public Collection<User> getUserResponsable() {
         Role responsableRole = roleRepository.findByName(ERole.ROLE_RESPONSABLE)
@@ -61,6 +63,7 @@ public class UserManagementsServices {
                 .email(userRequest.getEmail())
                 .phone(userRequest.getPhone())
                 .adress(userRequest.getAdress())
+                .status(statusInProgress)
                 .password(passwordEncoder.encode(generatePassword(userRequest.getFirstname(), userRequest.getLastname())))
                 .roles(roles)
                 .build();
@@ -164,5 +167,13 @@ public class UserManagementsServices {
         } else return null;
     }
 
+
+    public void acceptCustomer(@PathVariable("id") Integer id) {
+        Optional<User> optionalUser = userRepository.findById(id);
+        if(optionalUser.isPresent()) {
+            User u = optionalUser.get();
+            u.setStatus(statusAccepted);
+        }
+    }
 
 }

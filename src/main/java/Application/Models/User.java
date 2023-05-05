@@ -52,6 +52,8 @@ public class User implements UserDetails {
   @NotBlank
   private String password;
 
+  private String status;
+
 
   @JsonIgnore
   @ManyToMany

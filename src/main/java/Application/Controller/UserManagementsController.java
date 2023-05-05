@@ -55,7 +55,11 @@ public class UserManagementsController {
         return userManagementsServices.updateResponsable(id, userRequest);
     }
 
+    @PutMapping("/accept-customer/{id}")
+    public void acceptCustomer(@PathVariable("id") Integer id) {
+        userManagementsServices.acceptCustomer(id);
+    }
 
 
 
-}
+    }
