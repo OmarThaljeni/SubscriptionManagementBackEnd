@@ -35,6 +35,10 @@ public class ClaimController {
         return claimsService.deleteClaim(id);
     }
 
+    @PutMapping("/treat-claim/{id}")
+    public void treatClaim(@PathVariable("id") Integer id) {
+        claimsService.treatClaim(id);
+    }
 
 
 }

@@ -45,15 +45,12 @@ public class ClaimsService {
         Optional<Claim> claimOptional = claimRepository.findById(id);
         if (claimOptional.isPresent()) {
             Claim c = claimOptional.get();
-            c.setStatus(claimRequest.getStatus());
-            var claimsGenerated = Claim.builder()
-                    .subject(c.getSubject())
-                    .body(c.getBody())
-                    .status(c.getStatus())
-                    .priority(c.getPriority())
-                    .build();
-            claimRepository.save(claimsGenerated);
-            return claimsGenerated;
+            c.setStatus("En Attente");
+            c.setSubject(claimRequest.getSubject());
+            c.setBody(claimRequest.getBody());
+            c.setPriority(claimRequest.getPriority());
+            claimRepository.save(c);
+            return c;
         } else return null;
     }
 
@@ -65,6 +62,15 @@ public class ClaimsService {
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
+
+    public void treatClaim(@PathVariable("id") Integer id) {
+        Optional<Claim> claimOptional = claimRepository.findById(id);
+        if(claimOptional.isPresent()) {
+            Claim c = claimOptional.get();
+            c.setStatus("Traité");
+        }
+    }
+
 
 
 }
