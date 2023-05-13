@@ -15,7 +15,6 @@ import org.springframework.data.repository.query.Param;
 public interface UserRepository extends JpaRepository<User, Integer> {
 
   Optional<User> findByEmail(String email);
-
   List<User> findByRoles(Role roles);
 
   @Modifying

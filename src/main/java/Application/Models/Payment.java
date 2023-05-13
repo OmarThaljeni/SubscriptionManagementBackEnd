@@ -22,13 +22,10 @@ public class Payment {
     @GeneratedValue
     private Integer id;
 
-    @NotBlank
     private int montantPaie;
 
-    @NotBlank
     private int montantReste;
 
-    @NotBlank
     private LocalDate datePayment;
 
     private String observation;
