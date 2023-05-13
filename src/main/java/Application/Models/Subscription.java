@@ -6,7 +6,6 @@ import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
 import lombok.*;
 
-import java.util.List;
 import java.util.Set;
 
 
@@ -27,12 +26,19 @@ public class Subscription {
     @Size(max = 30)
     private String typeSubcription;
 
+    private long montantTotal;
+
+    private long montantPaie;
+
+
     @ManyToMany(mappedBy = "subscriptions")
     Set<User> userSet;
 
-
     @ManyToMany(mappedBy = "subscriptions")
     Set<ServiceCni> serviceCniSet;
+
+    @ManyToMany(mappedBy = "subscriptions")
+    Set<Payment> payments;
 
 
 

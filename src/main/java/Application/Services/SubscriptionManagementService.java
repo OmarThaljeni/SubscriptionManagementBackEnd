@@ -66,6 +66,7 @@ public class SubscriptionManagementService {
             serviceCniSet.add(serviceCni);
             var subscriptionGenerated = Subscription.builder()
                     .typeSubcription(subscriptionRequest.getTypeSubcription())
+                    .montantTotal(subscriptionRequest.getMontantTotal())
                     .userSet(setUser)
                     .serviceCniSet(serviceCniSet)
                     .build();
