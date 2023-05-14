@@ -30,7 +30,6 @@ public class Payment {
 
     private String observation;
 
-    @JsonIgnore
     @ManyToMany
     @JoinTable(
             name = "payments_subscriptions",

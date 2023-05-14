@@ -37,6 +37,7 @@ public class Subscription {
     @ManyToMany(mappedBy = "subscriptions")
     Set<ServiceCni> serviceCniSet;
 
+    @JsonIgnore
     @ManyToMany(mappedBy = "subscriptions")
     Set<Payment> payments;
 
